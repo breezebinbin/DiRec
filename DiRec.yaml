@@ -1,0 +1,64 @@
+# DiRec.yaml
+
+## Where the samples will be written
+save_data: try1   # 模型保存路径
+
+## Where the vocab(s) will be written
+src_vocab: data.src   # 源语言词汇表
+tgt_vocab: data.tgt   # 目标语言词汇表
+# Prevent overwriting existing files in the folder
+overwrite: False
+
+# Corpus opts:
+data:
+  corpus_1:
+    path_src: zh_train.txt   # 源语言训练集
+    path_tgt: ti_train.txt   # 目标语言训练集
+  valid:
+    path_src: zh_val.txt    #源语言测试集
+    path_tgt: ti_val.txt    #目标语言测试集
+
+# Train on a single GPU
+world_size: 1
+gpu_ranks: [0]
+# General opts
+save_model: 18w_try2/try2
+save_checkpoint_steps: 10000
+valid_steps: 5000
+train_steps: 100000
+
+# Batching
+bucket_size: 262144
+num_workers: 2
+batch_type: "tokens" 
+batch_size: 8192 
+valid_batch_size: 4096
+accum_count: [4] 
+accum_steps: [0]
+
+# Optimization
+model_dtype: "fp16"
+optim: "adam"
+learning_rate: 1
+warmup_steps: 4000
+decay_method: "noam"
+adam_beta2: 0.998
+max_grad_norm: 0 
+label_smoothing: 0.1 
+param_init: 0
+param_init_glorot: true
+normalization: "tokens"
+
+# Model
+encoder_type: transformer
+decoder_type: transformer
+position_encoding: true  
+enc_layers: 8
+dec_layers: 8
+heads: 16
+hidden_size: 1024
+word_vec_size: 1024
+transformer_ff: 4096
+dropout_steps: [0]
+dropout: [0.2]
+attention_dropout: [0.2]
